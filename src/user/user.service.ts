@@ -69,7 +69,7 @@ export class UserService {
         role: user.role,
         email: user.email,
       },
-      '01tranducKey',
+      process.env.TOKEN_KEY,
     );
 
     return { token };

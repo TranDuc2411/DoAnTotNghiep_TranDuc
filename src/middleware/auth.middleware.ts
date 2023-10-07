@@ -6,8 +6,7 @@ import * as jwt from 'jsonwebtoken';
 export class AuthMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
     // Lấy token từ tiêu đề Authorization
-    const token = req.headers.authorization;
-    console.log('fuck token');
+    const token = req.headers.authorization.split(' ')[1];
 
     if (!token) {
       // Trả về thông báo lỗi nếu không có token
@@ -16,7 +15,7 @@ export class AuthMiddleware implements NestMiddleware {
 
     // Giải mã và xác thực token
     try {
-      const decoded = jwt.verify(token, '01tranducKey');
+      const decoded = jwt.verify(token, process.env.TOKEN_KEY);
       console.log(token);
 
       // Gắn thông tin user đã xác thực vào request

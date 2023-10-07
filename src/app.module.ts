@@ -5,15 +5,17 @@ import { UserModule } from './user/user.module';
 import { ProductModule } from './product/product.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/user.entity';
+
+const username = process.env.DB_USERNAME;
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
+      host: process.env.DB_HOST || 'localhost',
       port: 5433,
-      username: '01tranduc',
-      password: '1234567Duc',
-      database: 'DB',
+      username: process.env.DB_USERNAME || '01tranduc',
+      password: process.env.DB_PASSWORD || '1234567Duc',
+      database: process.env.DB_NAME || 'DB',
       entities: [User],
       synchronize: true,
     }),
