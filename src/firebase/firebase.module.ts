@@ -1,7 +1,7 @@
 // firebase.module.ts
 
 import { Module } from '@nestjs/common';
-import { FirebaseAdminModule } from 'nest - firebase - admin';
+import { FirebaseAdminModule } from 'firebase-admin';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { UploadController } from './uploadfile.controller';
