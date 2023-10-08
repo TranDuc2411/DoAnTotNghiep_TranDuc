@@ -9,6 +9,8 @@ import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import * as jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 @Injectable()
 export class UserService {
