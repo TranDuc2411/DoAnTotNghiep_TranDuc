@@ -1,9 +1,3 @@
-import { UploadfileService } from './firebase/uploadfile.service';
-import { AuthService } from './firebase/auth.service';
-import { UploadfileController } from './firebase/uploadfile.controller';
-import { AuthController } from './firebase/auth.controller';
-import { FirebaseModule } from './firebase/firebase.module';
-
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -15,7 +9,6 @@ import { User } from './user/user.entity';
 const username = process.env.DB_USERNAME;
 @Module({
   imports: [
-    FirebaseModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST || 'localhost',
@@ -29,7 +22,7 @@ const username = process.env.DB_USERNAME;
     UserModule,
     ProductModule,
   ],
-  controllers: [UploadfileController, AuthController, AppController],
-  providers: [UploadfileService, AuthService, AppService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
