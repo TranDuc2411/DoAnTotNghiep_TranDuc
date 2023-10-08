@@ -6,6 +6,7 @@ import { ProductModule } from './product/product.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/user.entity';
 import { GoogleAuthModule } from './google-auth/google-auth.module';
+import { FirebaseModule } from './firebase/firebase.module';
 
 const username = process.env.DB_USERNAME;
 @Module({
@@ -23,6 +24,7 @@ const username = process.env.DB_USERNAME;
     UserModule,
     ProductModule,
     GoogleAuthModule,
+    FirebaseModule,
   ],
   controllers: [AppController],
   providers: [AppService],
