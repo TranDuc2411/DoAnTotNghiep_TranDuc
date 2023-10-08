@@ -10,6 +10,7 @@ import { User } from './user.entity';
 import * as jwt from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
 import * as dotenv from 'dotenv';
+import { time } from 'console';
 dotenv.config();
 
 @Injectable()
@@ -72,6 +73,9 @@ export class UserService {
         email: user.email,
       },
       process.env.TOKEN_KEY,
+      {
+        expiresIn: '1h',
+      },
     );
 
     return { token };
