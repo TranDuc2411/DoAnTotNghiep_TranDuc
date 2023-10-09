@@ -15,9 +15,6 @@ export class GoogleAuthController {
   async googleLoginCallback(@Req() req, @Res() res) {
     const user = req.user;
     const token = await this.googleAuthService.generateToken(user);
-    // console.log(token);
-    // Trả về đối tượng JSON chứa token
-    // return { token };
     return res.json({ token });
   }
 }
