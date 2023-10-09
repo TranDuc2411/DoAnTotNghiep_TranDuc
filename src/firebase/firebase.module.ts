@@ -12,4 +12,4 @@ import { UploadsController } from './firebase.controller';
   controllers: [UploadsController],
   providers: [FirebaseService],
 })
-export class UploadsModule {}
+export class FirebaseModule {}
