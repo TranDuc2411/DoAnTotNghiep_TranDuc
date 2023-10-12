@@ -7,7 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/user.entity';
 import { GoogleAuthModule } from './google-auth/google-auth.module';
 import { FirebaseUploadModule } from './firebase-upload/firebase-upload.module';
-import { MulterModule } from '@nestjs/platform-express/multer';
+// import { MulterModule } from '@nestjs/platform-express/multer';
 
 const username = process.env.DB_USERNAME;
 @Module({
@@ -22,10 +22,6 @@ const username = process.env.DB_USERNAME;
       entities: [User],
       synchronize: true,
     }),
-    MulterModule.register({
-      dest: './uploads', // Thư mục lưu trữ tệp tạm thời
-    }),
-    // Các module và controller khác
     UserModule,
     ProductModule,
     GoogleAuthModule,

@@ -20,14 +20,6 @@ async function bootstrap() {
   // config môi trường
   dotenv.config();
 
-  // cấu hình muler upload file tạm thời
-  // Cấu hình Multer
-  // app.use(
-  //   MulterModule.register({
-  //     dest: './uploads',
-  //   }),
-  // );
-
   await app.listen(process.env.SERVER_PORT);
 }
 bootstrap();
