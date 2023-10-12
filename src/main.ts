@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as dotenv from 'dotenv';
 
+import { MulterModule } from '@nestjs/platform-express/multer';
 async function bootstrap() {
   // API doc
   const app = await NestFactory.create(AppModule);
@@ -18,6 +19,14 @@ async function bootstrap() {
 
   // config môi trường
   dotenv.config();
+
+  // cấu hình muler upload file tạm thời
+  // Cấu hình Multer
+  // app.use(
+  //   MulterModule.register({
+  //     dest: './uploads',
+  //   }),
+  // );
 
   await app.listen(process.env.SERVER_PORT);
 }
