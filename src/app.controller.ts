@@ -1,38 +1,41 @@
+// app.controller.ts
 import {
   Controller,
-  Get,
   Post,
-  UseInterceptors,
   UploadedFile,
+  UseInterceptors,
+  Req,
 } from '@nestjs/common';
-import { AppService } from './app.service';
-
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { Response } from 'express';
+import { Request } from 'express';
+import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
+  @Post('/demo1')
+  Demo(@Req() request: Request) {
+    const { fileUrl, username, password } = request.body; // Trích xuất username, password và fileUrl từ dữ liệu đầu vào
 
-  @Post('/upload')
-  @UseInterceptors(
-    FileInterceptor('file', {
-      storage: diskStorage({
-        destination: './uploads',
-        filename: (req, file, cb) => {
-          cb(null, `${file.originalname}`);
-        },
-      }),
-    }),
-  )
-  async uploadFile(@UploadedFile() file: any) {
-    console.log(file);
-    return 'success';
+    console.log('File URL:', fileUrl);
+    console.log('Username:', username);
+    console.log('Password:', password);
+
+    // Bạn có thể sử dụng thông tin này cho xử lý tiếp theo nếu cần
+
+    return 'okok';
+  }
+  @Post('/demo2')
+  Demo1(@Req() request: Request) {
+    const { fileUrl, name, fuckingname } = request.body; // Trích xuất username, password và fileUrl từ dữ liệu đầu vào
+
+    console.log('File URL:', fileUrl);
+    console.log('name:', name);
+    console.log('fuckingname:', fuckingname);
+
+    // Bạn có thể sử dụng thông tin này cho xử lý tiếp theo nếu cần
+
+    return 'demo2';
   }
 }
