@@ -9,7 +9,6 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Request } from 'express';
 import { AppService } from './app.service';
-import { FirebaseFileUpload } from './middleware/uploadfirebase.decorator';
 
 @Controller()
 export class AppController {
@@ -17,9 +16,9 @@ export class AppController {
 
   @Post('/demo1')
   Demo(@Req() request: Request) {
-    const { fileUrl, username, password } = request.body; // Trích xuất username, password và fileUrl từ dữ liệu đầu vào
+    const { imageUrl, username, password } = request.body; // Trích xuất username, password và fileUrl từ dữ liệu đầu vào
 
-    console.log('File URL:', fileUrl);
+    console.log('File URL:', imageUrl);
     console.log('Username:', username);
     console.log('Password:', password);
 

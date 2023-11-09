@@ -2,9 +2,7 @@ import {
   Module,
   NestModule,
   MiddlewareConsumer,
-  Next,
-  Req,
-  Res,
+  RequestMethod,
 } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -14,12 +12,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/user.entity';
 import { GoogleAuthModule } from './google-auth/google-auth.module';
 import { UploadMiddleware } from './middleware/upload.middleware';
-import { MulterModule } from '@nestjs/platform-express';
 import { CatecoryModule } from './catecory/catecory.module';
 import { Product } from './product/product.entity';
 import { Category } from './catecory/catecory.entity';
 
-const username = process.env.DB_USERNAME;
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -39,16 +35,12 @@ const username = process.env.DB_USERNAME;
   controllers: [AppController],
   providers: [AppService],
 })
-// export class AppModule {}
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    // const parameterName = 'img';
-    consumer.apply(UploadMiddleware['img']).forRoutes(AppController); // Áp dụng cho tất cả các tuyến đường trong AppModule
+    consumer
+      .apply((req, res, next) =>
+        new UploadMiddleware('img').use(req, res, next),
+      )
+      .forRoutes(AppController);
   }
 }
-// export class AppModule implements NestModule {
-//   configure(consumer: MiddlewareConsumer) {
-//     const parameterName = 'img';
-//     consumer.apply(UploadMiddleware["img"]).forRoutes(AppController); // Áp dụng cho tất cả các tuyến đường trong AppModule
-//   }
-// }

@@ -9,13 +9,15 @@ const serviceAccount = require('../../doantotnghiep-ce201-2beebf6fb546.json');
 @Injectable()
 export class UploadMiddleware implements NestMiddleware {
   private upload = multer.Instance;
+  // private filename: string;
   private storageBucket: admin.storage.Storage;
 
-  constructor(private filename: string) {
+  constructor(private readonly filename: string) {
+    // constructor() {
     // if (!fs.existsSync('./uploads')) {
     //   fs.mkdirSync('./uploads');
     // }
-
+    this.filename = filename;
     this.upload = multer({
       // dest: './uploads',
       storage: multer.memoryStorage(), // Sử dụng memoryStorage để lưu trữ tệp tải lên tạm thời trong bộ nhớ
@@ -66,8 +68,9 @@ export class UploadMiddleware implements NestMiddleware {
   //hàm chính xử lý file của middleware
   use(req: Request, res: Response, next: NextFunction) {
     // this.parameterName = 'img';
-    console.log(this.filename);
-    console.log();
+    // console.log(this.filename);
+    // console.log();
+    // this.upload.single('avatar')(req, res, async (err) => {
     this.upload.single(this.filename)(req, res, async (err) => {
       if (err) {
         console.error(err);
@@ -78,7 +81,7 @@ export class UploadMiddleware implements NestMiddleware {
         try {
           const imageUrl = await this.uploadFileToFirebase(req.file);
           // console.log('URL của tệp đã tải lên:', imageUrl);
-          req.body.fileUrl = imageUrl;
+          req.body.imageUrl = imageUrl;
         } catch (error) {
           console.error('Lỗi tải lên tệp lên Firebase:', error);
           return res.status(500).send('Lỗi tải lên tệp lên Firebase');
