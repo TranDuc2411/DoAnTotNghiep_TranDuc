@@ -1,19 +1,45 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
+import { Category } from '../catecory/catecory.entity'; // Đảm bảo rằng bạn có một file category.entity.ts đã được tạo
 
-@Entity()
+@Entity({ name: 'product' })
 export class Product {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
+  categoryid: number;
+
+  @Column()
   productname: string;
 
   @Column()
-  prime: string;
+  title: string;
 
   @Column()
-  count: string;
+  quantity: number;
 
   @Column()
-  dicription: string;
+  prime: number;
+
+  @Column()
+  productdescription: string;
+
+  @Column()
+  status: string;
+
+  @Column()
+  urlimg: string;
+
+  @Column()
+  updateat: Date;
+
+  @ManyToOne(() => Category, (category) => category.products)
+  @JoinColumn({ name: 'categoryid' })
+  category: Category;
 }

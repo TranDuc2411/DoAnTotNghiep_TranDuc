@@ -11,7 +11,7 @@ export class UploadMiddleware implements NestMiddleware {
   private upload = multer.Instance;
   private storageBucket: admin.storage.Storage;
 
-  constructor() {
+  constructor(private filename: string) {
     // if (!fs.existsSync('./uploads')) {
     //   fs.mkdirSync('./uploads');
     // }
@@ -65,7 +65,10 @@ export class UploadMiddleware implements NestMiddleware {
 
   //hàm chính xử lý file của middleware
   use(req: Request, res: Response, next: NextFunction) {
-    this.upload.single('img')(req, res, async (err) => {
+    // this.parameterName = 'img';
+    console.log(this.filename);
+    console.log();
+    this.upload.single(this.filename)(req, res, async (err) => {
       if (err) {
         console.error(err);
         return res.status(500).send('Lỗi tải lên tệp');

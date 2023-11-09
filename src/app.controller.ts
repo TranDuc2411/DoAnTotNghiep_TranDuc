@@ -9,6 +9,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Request } from 'express';
 import { AppService } from './app.service';
+import { FirebaseFileUpload } from './middleware/uploadfirebase.decorator';
 
 @Controller()
 export class AppController {

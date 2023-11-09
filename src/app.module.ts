@@ -1,4 +1,11 @@
-import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
+import {
+  Module,
+  NestModule,
+  MiddlewareConsumer,
+  Next,
+  Req,
+  Res,
+} from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
@@ -8,6 +15,9 @@ import { User } from './user/user.entity';
 import { GoogleAuthModule } from './google-auth/google-auth.module';
 import { UploadMiddleware } from './middleware/upload.middleware';
 import { MulterModule } from '@nestjs/platform-express';
+import { CatecoryModule } from './catecory/catecory.module';
+import { Product } from './product/product.entity';
+import { Category } from './catecory/catecory.entity';
 
 const username = process.env.DB_USERNAME;
 @Module({
@@ -18,12 +28,13 @@ const username = process.env.DB_USERNAME;
       username: process.env.DB_USERNAME || '01tranduc',
       password: process.env.DB_PASSWORD || '1234567Duc',
       database: process.env.DB_NAME || 'DB',
-      entities: [User],
+      entities: [User, Product, Category],
       synchronize: true,
     }),
     UserModule,
     ProductModule,
     GoogleAuthModule,
+    CatecoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -31,6 +42,13 @@ const username = process.env.DB_USERNAME;
 // export class AppModule {}
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(UploadMiddleware).forRoutes(AppController); // Áp dụng cho tất cả các tuyến đường trong AppModule
+    // const parameterName = 'img';
+    consumer.apply(UploadMiddleware['img']).forRoutes(AppController); // Áp dụng cho tất cả các tuyến đường trong AppModule
   }
 }
+// export class AppModule implements NestModule {
+//   configure(consumer: MiddlewareConsumer) {
+//     const parameterName = 'img';
+//     consumer.apply(UploadMiddleware["img"]).forRoutes(AppController); // Áp dụng cho tất cả các tuyến đường trong AppModule
+//   }
+// }
