@@ -9,11 +9,13 @@ import { ProductController } from './product.controller';
 import { ProductService } from './product.service';
 import { Product } from './product.entity';
 import { AuthMiddleware } from 'src/middleware/auth.middleware';
+import { ProductHistoryService } from 'src/product-history/product-history.service';
+import { ProductHistory } from 'src/product-history/product-history.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Product])],
+  imports: [TypeOrmModule.forFeature([Product, ProductHistory])],
   controllers: [ProductController],
-  providers: [ProductService],
+  providers: [ProductService, ProductHistoryService],
 })
 export class ProductModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

@@ -16,6 +16,7 @@ import { CatecoryModule } from './catecory/catecory.module';
 import { Product } from './product/product.entity';
 import { Category } from './catecory/catecory.entity';
 import { ProductHistoryModule } from './product-history/product-history.module';
+import { ProductHistory } from './product-history/product-history.entity';
 
 @Module({
   imports: [
@@ -25,7 +26,7 @@ import { ProductHistoryModule } from './product-history/product-history.module';
       username: process.env.DB_USERNAME || '01tranduc',
       password: process.env.DB_PASSWORD || '1234567Duc',
       database: process.env.DB_NAME || 'DB',
-      entities: [User, Product, Category],
+      entities: [User, Product, Category, ProductHistory],
       synchronize: true,
     }),
     UserModule,
