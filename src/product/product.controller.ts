@@ -8,7 +8,7 @@ import {
   Param,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
-import { ProductDto } from './producr.DTO';
+import { ProductDto } from './producr.dto';
 import { send } from 'process';
 
 @Controller('product')
