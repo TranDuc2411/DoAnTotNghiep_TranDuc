@@ -15,6 +15,7 @@ import { UploadMiddleware } from './middleware/upload.middleware';
 import { CatecoryModule } from './catecory/catecory.module';
 import { Product } from './product/product.entity';
 import { Category } from './catecory/catecory.entity';
+import { ProductHistoryModule } from './product-history/product-history.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { Category } from './catecory/catecory.entity';
     ProductModule,
     GoogleAuthModule,
     CatecoryModule,
+    ProductHistoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
