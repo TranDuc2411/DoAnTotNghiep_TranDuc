@@ -17,6 +17,8 @@ import { Product } from './product/product.entity';
 import { Category } from './catecory/catecory.entity';
 import { ProductHistoryModule } from './product-history/product-history.module';
 import { ProductHistory } from './product-history/product-history.entity';
+import { CartProductModule } from './cart/cart-product.module';
+import { CartProduct } from './cart/cart-product.entity';
 
 @Module({
   imports: [
@@ -26,7 +28,7 @@ import { ProductHistory } from './product-history/product-history.entity';
       username: process.env.DB_USERNAME || '01tranduc',
       password: process.env.DB_PASSWORD || '1234567Duc',
       database: process.env.DB_NAME || 'DB',
-      entities: [User, Product, Category, ProductHistory],
+      entities: [User, Product, Category, ProductHistory, CartProduct],
       synchronize: true,
     }),
     UserModule,
@@ -34,6 +36,7 @@ import { ProductHistory } from './product-history/product-history.entity';
     GoogleAuthModule,
     CatecoryModule,
     ProductHistoryModule,
+    CartProductModule,
   ],
   controllers: [AppController],
   providers: [AppService],

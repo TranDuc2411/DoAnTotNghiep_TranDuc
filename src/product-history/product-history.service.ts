@@ -1,4 +1,3 @@
-// src/modules/producthistory/producthistory.service.ts
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -12,21 +11,26 @@ export class ProductHistoryService {
     private readonly productHistoryRepository: Repository<ProductHistory>,
   ) {}
 
+  // Lấy tất cả lịch sử sản phẩm
   async getAllProductHistories(): Promise<ProductHistoryDto[]> {
     const productHistories = await this.productHistoryRepository.find();
     return productHistories.map((history) => this.mapToDto(history));
   }
 
+  // Lấy lịch sử sản phẩm theo ID
   async getProductHistoryById(id: number): Promise<ProductHistoryDto> {
     const productHistory = await this.productHistoryRepository.findOne({
       where: { id },
     });
     if (!productHistory) {
-      throw new NotFoundException(`Product history with ID ${id} not found`);
+      throw new NotFoundException(
+        `Không tìm thấy lịch sử sản phẩm với ID ${id}`,
+      );
     }
     return this.mapToDto(productHistory);
   }
 
+  // Tạo mới lịch sử sản phẩm
   async createProductHistory(
     productHistoryDto: ProductHistoryDto,
   ): Promise<ProductHistoryDto> {
@@ -37,6 +41,7 @@ export class ProductHistoryService {
     return this.mapToDto(savedProductHistory);
   }
 
+  // Cập nhật lịch sử sản phẩm
   async updateProductHistory(
     id: number,
     updatedProductHistoryDto: ProductHistoryDto,
@@ -51,11 +56,13 @@ export class ProductHistoryService {
     return this.mapToDto(savedProductHistory);
   }
 
+  // Xóa lịch sử sản phẩm
   async deleteProductHistory(id: number): Promise<void> {
     const productHistory = await this.getProductHistoryById(id);
     await this.productHistoryRepository.delete(productHistory);
   }
 
+  // Ánh xạ lịch sử sản phẩm sang DTO
   private mapToDto(productHistory: ProductHistory): ProductHistoryDto {
     return {
       adminupdateid: productHistory.adminupdateid,

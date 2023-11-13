@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { CartProduct } from 'src/cart/cart-product.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
 @Entity()
 export class User {
@@ -17,4 +18,8 @@ export class User {
 
   @Column({ default: null })
   email: string;
+
+  // Thêm mối quan hệ OneToMany với CartProduct
+  @OneToMany(() => CartProduct, (cartProduct) => cartProduct.user)
+  cartProducts: CartProduct[];
 }

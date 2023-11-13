@@ -30,7 +30,7 @@ export class AuthMiddleware implements NestMiddleware {
 
         // Gắn thông tin user đã xác thực vào request
         req['user'] = decoded;
-        console.log(decoded);
+        console.log(req['user']);
 
         // Tiếp tục xử lý yêu cầu
         next();
