@@ -3,43 +3,51 @@ import { Request, Response, NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
 
 @Injectable()
-export class AuthMiddleware implements NestMiddleware {
+export class AuthAdminMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
     try {
       // Lấy token từ tiêu đề Authorization
       const authorizationHeader = req.headers.authorization;
 
       if (!authorizationHeader) {
-        // Trả về thông báo lỗi nếu không có header Authorization
         return res
           .status(401)
           .json({ message: 'Authorization header is missing' });
       }
 
-      const token = authorizationHeader.split(' ')[1];
+      const token = authorizationHeader?.split(' ')[1];
 
       if (!token) {
-        // Trả về thông báo lỗi nếu không có token
         return res.status(401).json({ message: 'Token is missing' });
       }
 
       // Giải mã và xác thực token
       try {
-        const decoded = jwt.verify(token, process.env.TOKEN_KEY);
-        console.log(token);
+        const decoded = jwt.verify(
+          token,
+          process.env.TOKEN_KEY,
+        ) as jwt.JwtPayload;
 
-        // Gắn thông tin user đã xác thực vào request
-        req['user'] = decoded;
-        console.log(decoded);
+        if (!decoded) {
+          return res.status(401).json({ message: 'Invalid token' });
+        }
 
-        // Tiếp tục xử lý yêu cầu
-        next();
+        if (decoded.role === 1) {
+          console.log('admin :', token);
+          // Gắn thông tin user đã xác thực vào request
+          req['user'] = decoded;
+          console.log(decoded);
+          // Tiếp tục xử lý yêu cầu
+          return next();
+        }
+
+        return res.status(401).json({
+          message: 'Login with the admin account to use this feature!',
+        });
       } catch (error) {
-        // Trả về thông báo lỗi nếu token không hợp lệ
         return res.status(401).json({ message: 'Invalid token' });
       }
     } catch (error) {
-      // Xử lý lỗi khi không thể đọc được header
       return res.status(500).json({ message: 'Internal server error' });
     }
   }
