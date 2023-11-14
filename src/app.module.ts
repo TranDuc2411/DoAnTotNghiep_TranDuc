@@ -20,6 +20,8 @@ import { ProductHistory } from './product-history/product-history.entity';
 import { CartProductModule } from './cart/cart-product.module';
 import { CartProduct } from './cart/cart-product.entity';
 import { OrderModule } from './order/order.module';
+import { Order } from './order/order.entity';
+import { OrderProduct } from './order/order-product.entity';
 
 @Module({
   imports: [
@@ -29,7 +31,15 @@ import { OrderModule } from './order/order.module';
       username: process.env.DB_USERNAME || '01tranduc',
       password: process.env.DB_PASSWORD || '1234567Duc',
       database: process.env.DB_NAME || 'DB',
-      entities: [User, Product, Category, ProductHistory, CartProduct],
+      entities: [
+        User,
+        Product,
+        Category,
+        ProductHistory,
+        CartProduct,
+        Order,
+        OrderProduct,
+      ],
       synchronize: true,
     }),
     UserModule,
