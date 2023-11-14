@@ -19,6 +19,7 @@ import { ProductHistoryModule } from './product-history/product-history.module';
 import { ProductHistory } from './product-history/product-history.entity';
 import { CartProductModule } from './cart/cart-product.module';
 import { CartProduct } from './cart/cart-product.entity';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { CartProduct } from './cart/cart-product.entity';
     CatecoryModule,
     ProductHistoryModule,
     CartProductModule,
+    OrderModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -6,8 +6,9 @@ import {
   JoinColumn,
   OneToMany,
 } from 'typeorm';
-import { Category } from '../catecory/catecory.entity'; // Đảm bảo rằng bạn có một file category.entity.ts đã được tạo
+import { Category } from '../catecory/catecory.entity';
 import { CartProduct } from 'src/cart/cart-product.entity';
+import { OrderProduct } from 'src/order/order-product.entity'; // Đảm bảo rằng bạn có một file order-product.entity.ts đã được tạo
 
 @Entity({ name: 'product' })
 export class Product {
@@ -48,4 +49,8 @@ export class Product {
   // Thêm mối quan hệ OneToMany với CartProduct
   @OneToMany(() => CartProduct, (cartProduct) => cartProduct.product)
   cartProducts: CartProduct[];
+
+  // Thêm mối quan hệ OneToMany với OrderProduct
+  @OneToMany(() => OrderProduct, (orderProduct) => orderProduct.product)
+  orderProducts: OrderProduct[];
 }
