@@ -11,6 +11,7 @@ import { Product } from './product.entity';
 import { AuthMiddleware } from 'src/middleware/auth.middleware';
 import { ProductHistoryService } from 'src/product-history/product-history.service';
 import { ProductHistory } from 'src/product-history/product-history.entity';
+import { AuthAdminMiddleware } from 'src/middleware/auth-admin.middleware';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Product, ProductHistory])],
@@ -19,6 +20,6 @@ import { ProductHistory } from 'src/product-history/product-history.entity';
 })
 export class ProductModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).forRoutes(ProductController);
+    consumer.apply(AuthAdminMiddleware).forRoutes(ProductController);
   }
 }
