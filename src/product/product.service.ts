@@ -14,6 +14,7 @@ export class ProductService {
   // Tạo mới sản phẩm
   async create(productDto: ProductDto): Promise<Product> {
     const product = this.productRepository.create(productDto);
+
     return this.productRepository.save(product);
   }
 
@@ -39,24 +40,28 @@ export class ProductService {
   }
 
   // Tìm kiếm sản phẩm dựa trên các tham số
+  // Tìm kiếm sản phẩm dựa trên các tham số
   async searchProducts(
     productname: string,
     categoryid: number,
     status: string,
   ): Promise<Product[]> {
-    // Xây dựng các điều kiện tìm kiếm dựa trên các tham số
-    const conditions: any = {};
-    if (productname) {
-      conditions.productname = ILike(`%${productname}%`); // Tìm kiếm không phân biệt chữ hoa/chữ thường
-    }
-    if (categoryid) {
-      conditions.categoryid = categoryid;
-    }
-    if (status) {
-      conditions.status = status;
-    }
+    try {
+      const conditions: any = {};
+      if (productname) {
+        conditions.productname = ILike(`%${productname}%`);
+      }
+      if (categoryid) {
+        conditions.categoryid = categoryid;
+      }
+      if (status) {
+        conditions.status = status;
+      }
 
-    // Thực hiện tìm kiếm
-    return this.productRepository.find({ where: conditions });
+      return this.productRepository.find({ where: conditions });
+    } catch (error) {
+      // Nếu có lỗi, bắt và trả về thông báo lỗi
+      throw new Error(`Error searching products: ${error.message}`);
+    }
   }
 }

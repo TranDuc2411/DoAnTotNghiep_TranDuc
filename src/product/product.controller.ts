@@ -8,6 +8,8 @@ import {
   Param,
   Query,
   Request,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { ProductDto } from './producr.dto';
@@ -30,6 +32,7 @@ export class ProductController {
   // API tạo mới sản phẩm
   @Post('create')
   async create(@Body() productDto: ProductDto) {
+    console.log(productDto);
     return this.productService.create(productDto);
   }
 
@@ -50,7 +53,7 @@ export class ProductController {
       productdescription: productDto.productdescription,
       status: productDto.status,
       category: String(productDto.categoryid),
-      column1: productDto.updateat, // Giả sử bạn muốn sử dụng trường `updateat` từ `ProductDto1` cho `column1` trong `ProductHistoryDto`
+      createat: productDto.updateat, // Giả sử bạn muốn sử dụng trường `updateat` từ `ProductDto1` cho `column1` trong `ProductHistoryDto`
 
       // Các trường khác nếu có
     };
@@ -84,7 +87,7 @@ export class ProductController {
   }
 
   // update and save history
-  @Put(':id/save-history')
+  @Put(':id/save')
   async updateAndSaveHistory(
     @Param('id') id: number,
     @Body() productDto: ProductDto,
@@ -104,7 +107,7 @@ export class ProductController {
       productdescription: updatedProduct.productdescription,
       status: updatedProduct.status,
       category: String(updatedProduct.categoryid),
-      column1: updatedProduct.updateat,
+      createat: updatedProduct.updateat,
       // Các trường khác nếu có
     };
 
@@ -120,15 +123,24 @@ export class ProductController {
   }
 
   // API cập nhật thông tin sản phẩm
-  @Put(':id')
+  @Put('edit/:id')
   async update(@Param('id') id: number, @Body() productDto: ProductDto) {
     return this.productService.update(id, productDto);
   }
 
   // API xóa sản phẩm
-  @Delete(':id')
+  @Delete('/delete/:id')
   async remove(@Param('id') id: number) {
-    return this.productService.remove(id);
+    try {
+      // Thực hiện xóa sản phẩm
+      await this.productService.remove(id);
+
+      // Trả về thông báo thành công nếu xóa thành công
+      return { message: 'Delete successfully' };
+    } catch (error) {
+      // Nếu có lỗi, bắt và trả về thông báo lỗi
+      throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   // API tìm kiếm sản phẩm dựa trên các tham số

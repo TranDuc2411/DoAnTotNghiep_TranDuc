@@ -1,5 +1,6 @@
 // src/modules/producthistory/producthistory.dto.ts
 import { IsNotEmpty, IsString, IsNumber, IsDate } from 'class-validator';
+import { CreateDateColumn } from 'typeorm';
 
 export class ProductHistoryDto {
   @IsNotEmpty()
@@ -40,5 +41,6 @@ export class ProductHistoryDto {
 
   @IsNotEmpty()
   @IsDate()
-  column1: Date;
+  @CreateDateColumn()
+  createat: Date;
 }

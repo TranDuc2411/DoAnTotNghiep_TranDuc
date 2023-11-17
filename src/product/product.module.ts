@@ -12,6 +12,7 @@ import { AuthMiddleware } from 'src/middleware/auth.middleware';
 import { ProductHistoryService } from 'src/product-history/product-history.service';
 import { ProductHistory } from 'src/product-history/product-history.entity';
 import { AuthAdminMiddleware } from 'src/middleware/auth-admin.middleware';
+import { UploadMiddleware } from 'src/middleware/upload.middleware';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Product, ProductHistory])],
@@ -21,5 +22,13 @@ import { AuthAdminMiddleware } from 'src/middleware/auth-admin.middleware';
 export class ProductModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(AuthAdminMiddleware).forRoutes(ProductController);
+    consumer
+      .apply((req, res, next) =>
+        new UploadMiddleware('urlimg').use(req, res, next),
+      )
+      .forRoutes(
+        { path: 'product/create1', method: RequestMethod.POST },
+        { path: 'product/:id/save', method: RequestMethod.PUT },
+      );
   }
 }

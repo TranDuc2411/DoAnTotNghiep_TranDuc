@@ -5,6 +5,7 @@ import {
   ManyToOne,
   JoinColumn,
   OneToMany,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Category } from '../catecory/catecory.entity';
 import { CartProduct } from 'src/cart/cart-product.entity';
@@ -39,7 +40,9 @@ export class Product {
   @Column()
   urlimg: string;
 
-  @Column()
+  // @Column()
+  // updateat: Date;
+  @UpdateDateColumn()
   updateat: Date;
 
   @ManyToOne(() => Category, (category) => category.products)

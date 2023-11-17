@@ -5,9 +5,10 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
+  CreateDateColumn,
 } from 'typeorm';
-import { User } from '../user/user.entity'; // Đảm bảo bạn có đường dẫn đúng đến file user.entity.ts
-import { Product } from '../product/product.entity'; // Đảm bảo bạn có đường dẫn đúng đến file product.entity.ts
+import { User } from '../user/user.entity';
+import { Product } from '../product/product.entity';
 
 @Entity({ name: 'producthistory' })
 export class ProductHistory {
@@ -41,14 +42,14 @@ export class ProductHistory {
   @Column()
   category: string;
 
-  @Column({ type: 'date' })
-  column1: Date;
+  @CreateDateColumn()
+  createat: Date;
 
   @ManyToOne(() => User)
   @JoinColumn({ name: 'adminupdateid' })
   admin: User;
 
-  @ManyToOne(() => Product)
-  @JoinColumn({ name: 'productid' })
-  product: Product;
+  // @ManyToOne(() => Product)
+  // @JoinColumn({ name: 'productid' })
+  // product: Product;
 }

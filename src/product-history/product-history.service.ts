@@ -74,7 +74,7 @@ export class ProductHistoryService {
       productdescription: productHistory.productdescription,
       status: productHistory.status,
       category: productHistory.category,
-      column1: productHistory.column1,
+      createat: productHistory.createat,
     };
   }
 }

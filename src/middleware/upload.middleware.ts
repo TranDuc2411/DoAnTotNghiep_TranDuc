@@ -13,22 +13,11 @@ export class UploadMiddleware implements NestMiddleware {
   private storageBucket: admin.storage.Storage;
 
   constructor(private readonly filename: string) {
-    // constructor() {
-    // if (!fs.existsSync('./uploads')) {
-    //   fs.mkdirSync('./uploads');
-    // }
     this.filename = filename;
     this.upload = multer({
       // dest: './uploads',
       storage: multer.memoryStorage(), // Sử dụng memoryStorage để lưu trữ tệp tải lên tạm thời trong bộ nhớ
     });
-
-    admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount),
-      storageBucket: 'gs://doantotnghiep-ce201.appspot.com',
-    });
-
-    this.storageBucket = admin.storage();
   }
 
   // hàm xử lý đẩy ảnh lên firebase
@@ -67,10 +56,17 @@ export class UploadMiddleware implements NestMiddleware {
 
   //hàm chính xử lý file của middleware
   use(req: Request, res: Response, next: NextFunction) {
-    // this.parameterName = 'img';
-    // console.log(this.filename);
-    // console.log();
-    // this.upload.single('avatar')(req, res, async (err) => {
+    // Kiểm tra xem Firebase app đã được khởi tạo chưa
+    if (!admin.apps.length) {
+      // Nếu chưa, thì mới khởi tạo
+      admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+        storageBucket: 'gs://doantotnghiep-ce201.appspot.com',
+      });
+    }
+
+    this.storageBucket = admin.storage();
+
     this.upload.single(this.filename)(req, res, async (err) => {
       if (err) {
         console.error(err);
@@ -81,7 +77,7 @@ export class UploadMiddleware implements NestMiddleware {
         try {
           const imageUrl = await this.uploadFileToFirebase(req.file);
           // console.log('URL của tệp đã tải lên:', imageUrl);
-          req.body.imageUrl = imageUrl;
+          req.body.urlimg = imageUrl;
         } catch (error) {
           console.error('Lỗi tải lên tệp lên Firebase:', error);
           return res.status(500).send('Lỗi tải lên tệp lên Firebase');

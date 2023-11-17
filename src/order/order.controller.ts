@@ -37,7 +37,7 @@ export class OrderController {
   }
 
   // Tìm tất cả các order của user hiện tại
-  @Get()
+  @Get('all')
   async findAllOrders(@Req() req): Promise<any> {
     // const userId = req.user.id;
     const userId = 1;
