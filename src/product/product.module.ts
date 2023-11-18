@@ -19,17 +19,17 @@ import { UploadMiddleware } from 'src/middleware/upload.middleware';
   controllers: [ProductController],
   providers: [ProductService, ProductHistoryService],
 })
-export class ProductModule {}
-// export class ProductModule implements NestModule {
-//   configure(consumer: MiddlewareConsumer) {
-//     consumer.apply(AuthMiddleware).forRoutes(ProductController);
-//     consumer
-//       .apply((req, res, next) =>
-//         new UploadMiddleware('urlimg').use(req, res, next),
-//       )
-//       .forRoutes(
-//         { path: 'product/create1', method: RequestMethod.POST },
-//         { path: 'product/:id/save', method: RequestMethod.PUT },
-//       );
-//   }
-// }
+// export class ProductModule {}
+export class ProductModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthMiddleware).forRoutes(ProductController);
+    consumer
+      .apply((req, res, next) =>
+        new UploadMiddleware('urlimg').use(req, res, next),
+      )
+      .forRoutes(
+        { path: 'product/create1', method: RequestMethod.POST },
+        { path: 'product/:id/save', method: RequestMethod.PUT },
+      );
+  }
+}

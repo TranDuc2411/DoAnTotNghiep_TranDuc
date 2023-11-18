@@ -25,9 +25,20 @@ export class ProductController {
   ) {}
 
   // API kiểm thử
-  @Get('test')
-  async test() {
-    console.log('okok');
+  @Get('search')
+  async test(@Query() params: any) {
+    // console.log('log ra đây ', JSON.stringify(params));
+    try {
+      return this.productService.searchProducts1(params);
+    } catch (error) {
+      throw new HttpException(
+        {
+          message: 'Error searching products',
+          error: error.message,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   // API tạo mới sản phẩm
@@ -145,19 +156,4 @@ export class ProductController {
   }
 
   // API tìm kiếm sản phẩm dựa trên các tham số
-  @Get('search')
-  async searchProducts(@Query() params: ProductDto): Promise<Product[]> {
-    console.log(params);
-    try {
-      return this.productService.searchProducts1(params);
-    } catch (error) {
-      throw new HttpException(
-        {
-          message: 'Error searching products',
-          error: error.message,
-        },
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
-  }
 }
