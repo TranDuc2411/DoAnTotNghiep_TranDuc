@@ -34,9 +34,9 @@ export class CartProductService {
     return cartProducts;
   }
 
-  async removeProductFromCart(productId: number): Promise<void> {
+  async removeProductFromCart(productId: number): Promise<{ message: string }> {
     const cartProduct = await this.cartProductRepository.findOne({
-      where: { id: productId },
+      where: { productid: productId },
     });
 
     if (!cartProduct) {
@@ -46,6 +46,10 @@ export class CartProductService {
     }
 
     await this.cartProductRepository.remove(cartProduct);
+
+    return {
+      message: `Product with ID ${productId} successfully removed from the cart.`,
+    };
   }
 
   async removeAllProductsFromCart(userId: number): Promise<void> {

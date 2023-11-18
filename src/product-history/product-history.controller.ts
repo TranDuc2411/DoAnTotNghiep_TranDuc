@@ -21,11 +21,19 @@ export class ProductHistoryController {
   }
 
   // Lấy lịch sử sản phẩm theo ID
-  @Get(':id')
+  @Get('product/:productId')
   async getProductHistoryById(
-    @Param('id') id: number,
+    @Param('productId') productid: number,
   ): Promise<ProductHistoryDto> {
-    return this.productHistoryService.getProductHistoryById(id);
+    return this.productHistoryService.getProductHistoryById(productid);
+  }
+
+  //tìm kiếm các bản ghi lịch sử theo id admin
+  @Get('admin/:adminId')
+  async getProductHistoryByAdminId(
+    @Param('adminId') adminId: number,
+  ): Promise<ProductHistoryDto> {
+    return this.productHistoryService.getProductHistoryByAdminId(adminId);
   }
 
   // Tạo mới lịch sử sản phẩm

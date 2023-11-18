@@ -1,4 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+  Query,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Order } from './order.entity';
@@ -105,5 +111,53 @@ export class OrderService {
     const updatedOrder = await this.orderRepository.save(order);
 
     return updatedOrder;
+  }
+
+  async searchOrders(
+    @Query('status') status?: number,
+    @Query('clientId') clientId?: number,
+    @Query('startDate') startDate?: Date,
+    @Query('endDate') endDate?: Date,
+  ): Promise<Order[]> {
+    try {
+      const conditions: any = {};
+
+      if (status !== undefined) {
+        const parsedStatus = parseInt(status.toString(), 10);
+        if (!isNaN(parsedStatus)) {
+          conditions.status = parsedStatus;
+        }
+      }
+
+      if (clientId !== undefined) {
+        const parsedClientId = parseInt(clientId.toString(), 10);
+        if (!isNaN(parsedClientId)) {
+          conditions.clientId = parsedClientId;
+        }
+      }
+
+      if (startDate !== undefined && endDate !== undefined) {
+        const parsedStartDate = new Date(startDate);
+        const parsedEndDate = new Date(endDate);
+
+        if (
+          !isNaN(parsedStartDate.getTime()) &&
+          !isNaN(parsedEndDate.getTime())
+        ) {
+          conditions.createdAt = { $gte: parsedStartDate, $lte: parsedEndDate };
+        }
+      }
+
+      return this.orderRepository.find({ where: conditions });
+    } catch (error) {
+      console.error('Error processing searchOrders:', error);
+      throw new HttpException(
+        {
+          message: 'Invalid input for searchOrders',
+          error: error.message,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 }

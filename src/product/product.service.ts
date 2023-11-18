@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Query } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Like, ILike } from 'typeorm'; // Thêm `Like` và `ILike` để thực hiện tìm kiếm không phân biệt chữ hoa/chữ thường
 import { Product } from './product.entity';
@@ -40,27 +40,67 @@ export class ProductService {
   }
 
   // Tìm kiếm sản phẩm dựa trên các tham số
-  // Tìm kiếm sản phẩm dựa trên các tham số
   async searchProducts(
-    productname: string,
-    categoryid: number,
-    status: string,
+    @Query('productname') productname?: string,
+    @Query('categoryid') categoryid?: number,
+    @Query('status') status?: string,
+    @Query('updateAt') updateAt?: Date,
   ): Promise<Product[]> {
     try {
       const conditions: any = {};
-      if (productname) {
+
+      if (productname !== undefined) {
         conditions.productname = ILike(`%${productname}%`);
       }
-      if (categoryid) {
-        conditions.categoryid = categoryid;
+
+      // Kiểm tra giá trị của categoryid trước khi sử dụng nó
+      if (categoryid !== undefined) {
+        if (typeof categoryid === 'string') {
+          conditions.categoryid = ILike(`%${categoryid}%`);
+        } else {
+          conditions.categoryid = categoryid;
+        }
       }
+
       if (status) {
-        conditions.status = status;
+        conditions.status = ILike(`%${status}%`);
+      }
+
+      if (updateAt) {
+        conditions.updateAt = updateAt;
       }
 
       return this.productRepository.find({ where: conditions });
     } catch (error) {
-      // Nếu có lỗi, bắt và trả về thông báo lỗi
+      throw new Error(`Error searching products: ${error.message}`);
+    }
+  }
+  async searchProducts1(params: ProductDto): Promise<Product[]> {
+    try {
+      const conditions: any = {};
+
+      if (params.productname !== undefined) {
+        conditions.productname = ILike(`%${params.productname}%`);
+      }
+
+      // Kiểm tra giá trị của categoryid trước khi sử dụng nó
+      if (
+        params.categoryid !== undefined &&
+        !isNaN(Number(params.categoryid))
+      ) {
+        conditions.categoryid = params.categoryid;
+      }
+
+      if (params.status !== undefined) {
+        conditions.status = ILike(`%${params.status}%`);
+      }
+
+      if (params.updateat !== undefined) {
+        conditions.updateat = params.updateat;
+      }
+
+      return this.productRepository.find({ where: conditions });
+    } catch (error) {
       throw new Error(`Error searching products: ${error.message}`);
     }
   }

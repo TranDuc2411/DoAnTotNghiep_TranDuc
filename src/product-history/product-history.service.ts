@@ -18,16 +18,28 @@ export class ProductHistoryService {
   }
 
   // Lấy lịch sử sản phẩm theo ID
-  async getProductHistoryById(id: number): Promise<ProductHistoryDto> {
-    const productHistory = await this.productHistoryRepository.findOne({
-      where: { id },
+  async getProductHistoryById(productid: number): Promise<any> {
+    const productHistory = await this.productHistoryRepository.find({
+      where: { productid },
     });
     if (!productHistory) {
       throw new NotFoundException(
-        `Không tìm thấy lịch sử sản phẩm với ID ${id}`,
+        `Không tìm thấy lịch sử sản phẩm với ID ${productid}`,
       );
     }
-    return this.mapToDto(productHistory);
+    return productHistory;
+  }
+  // Lấy lịch sử sản phẩm theo ID
+  async getProductHistoryByAdminId(adminupdateid: number): Promise<any> {
+    const productHistory = await this.productHistoryRepository.find({
+      where: { adminupdateid },
+    });
+    if (!productHistory) {
+      throw new NotFoundException(
+        `Không tìm thấy lịch sử sản phẩm với ID ${adminupdateid}`,
+      );
+    }
+    return productHistory;
   }
 
   // Tạo mới lịch sử sản phẩm

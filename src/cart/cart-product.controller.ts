@@ -49,10 +49,10 @@ export class CartProductController {
     }
   }
 
-  @Delete('remove/:cartProductId')
-  async removeProductFromCart(@Param('cartProductId') cartProductId: number) {
+  @Delete('remove/:productId')
+  async removeProductFromCart(@Param('productId') productId: number) {
     try {
-      return await this.cartProductService.removeProductFromCart(cartProductId);
+      return await this.cartProductService.removeProductFromCart(productId);
     } catch (error) {
       throw new HttpException(
         'Internal server error',

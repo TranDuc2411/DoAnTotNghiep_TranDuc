@@ -15,6 +15,7 @@ import { ProductService } from './product.service';
 import { ProductDto } from './producr.dto';
 import { ProductHistoryDto } from 'src/product-history/product-history.dto';
 import { ProductHistoryService } from 'src/product-history/product-history.service';
+import { Product } from './product.entity';
 
 @Controller('product')
 export class ProductController {
@@ -145,12 +146,18 @@ export class ProductController {
 
   // API tìm kiếm sản phẩm dựa trên các tham số
   @Get('search')
-  async searchProducts(
-    @Query('productname') productname: string,
-    @Query('categoryid') categoryid: number,
-    @Query('status') status: string,
-  ) {
-    // Thực hiện tìm kiếm sử dụng các tham số truyền vào
-    return this.productService.searchProducts(productname, categoryid, status);
+  async searchProducts(@Query() params: ProductDto): Promise<Product[]> {
+    console.log(params);
+    try {
+      return this.productService.searchProducts1(params);
+    } catch (error) {
+      throw new HttpException(
+        {
+          message: 'Error searching products',
+          error: error.message,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }
